@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "canisters": {
+    "auction_final_backend": {
+      "type": "rust",
+      "package": "auction_final_backend",
+      "candid": "src/auction_final_backend/auction_final_backend.did"
+    },
+    "auction_final_frontend": {
+      "type": "assets",
+      "source": [
+        "src/auction_final_frontend/assets"
+      ],
+      "dependencies": [
+        "auction_final_backend"
+      ]
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "",
+      "args": ""
+    }
+  },
+  "output_env_file": ".env"
+}
