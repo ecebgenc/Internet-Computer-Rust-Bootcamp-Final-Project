@@ -1,0 +1,98 @@
+// record for structs, variant for enum
+type ResultBid = 
+    variant {
+        Ok;
+        Err : BidError;
+};
+
+
+type ResultAuction = 
+    variant {
+        Ok;
+        Err : AuctionError;
+};
+
+
+type AuctionError = 
+    variant {
+        UpdateError;
+        NoSuchAuction;
+        AuctionIsNotActive;
+        Expired;
+        AccessRejected;
+        InvalidChoice;
+    };
+
+
+type BidError = 
+    variant {
+        BidAmountLessThanCurrent;
+        UpdateError;
+        NoSuchAuction;
+        AuctionIsNotActive;
+        Expired;
+        ReachMaxBid;
+        InvalidChoice;
+        OwnerIsNotValid;
+    };
+
+
+type Bid =
+    record {
+        description: text,
+        auction: nat64;
+        owner: principal;
+        currency: text;
+        amount: nat32;
+        is_active: bool;
+    };
+
+
+type Item =
+    record {
+        title: text;
+        description: text;
+        owner: principal;
+        new_owner: principal;
+        currency: text;
+        amount: nat32;
+        is_active: bool;
+        start_time: text;
+        end_time: text;
+        bid: Vec Bid;
+    };
+
+
+type CreateBid =
+    record {
+        description: text;
+        amount: nat32;
+        currency: text;
+        is_active: bool;    
+        owner: text;
+    };
+
+
+type CreateItem =
+    record {
+        title: text;
+        description: text;
+        is_active: bool;
+        start_time: text;
+        end_time: text;
+        currency: text;
+        amount: nat32;
+    };
+
+
+// service for functions
+service : {
+    "get_item" : (nat64) -> (opt ) query;
+    "get_list_of_items" : () -> (opt vec Item) query;
+    "get_item_count" : () -> (nat64) query;
+    "find_most_bidded_item" : () -> (opt V) query;
+    "create_item" : (nat64, CreateItem) -> (opt Item);
+    "edit_item" : (nat64, CreateItem) -> (ResultAuction);
+    "end_item" : (nat64) -> (ResultAuction);
+    "bid" : (nat64, CreateBid) -> (ResultBid);
+};
